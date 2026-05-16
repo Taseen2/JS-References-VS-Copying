@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS Memory Guide: References vs Copies</title>
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="./style.css">
+  <!-- Google Fonts: Fira Code for code blocks, Inter for UI text -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+  <!-- Glowing Background Effects: Decorative blurred shapes -->
+  <div class="bg-shape shape-purple"></div>
+  <div class="bg-shape shape-cyan"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar glass">
+    <div class="logo">Learn<span class="highlight">JS</span></div>
+    <div class="nav-links">
+      <button id="theme-toggle" class="btn-icon" title="Toggle Theme">💡</button>
+    </div>
+  </nav>
+
+  <main class="container">
+    
+    <!-- Hero Section: Introduction and main heading -->
+    <header class="hero" id="hero">
+      <h1 class="glitch-title">Objects & Arrays: <br><span class="highlight">Reference vs Copy</span></h1>
+      <p class="subtitle">Why changing one variable mysteriously mutates another? Master memory pointers and eliminate mutation bugs forever.</p>
+    </header>
+
+    <!-- Explanation Cards: High-level concepts -->
+    <section class="cards-section">
+      <div class="glass card hover-lift">
+        <h3>🧊 Primitives</h3>
+        <p>Values like Strings, Numbers, and Booleans are copied by <strong>value</strong>.</p>
+        <code class="mini-code">let a = 5; let b = a; b++;<br>// a is 5, b is 6</code>
+      </div>
+      <div class="glass card hover-lift">
+        <h3>🔗 References</h3>
+        <p>Objects and Arrays point to a <strong>memory location</strong>. They aren't copied automatically!</p>
+        <code class="mini-code">let a = [1]; let b = a; b.push(2);<br>// a AND b are [1, 2]</code>
+      </div>
+      <div class="glass card hover-lift">
+        <h3>✨ Deep Copies</h3>
+        <p>To safely clone nested data without linked references, use deep copies.</p>
+        <code class="mini-code">const clone = structuredClone(obj);</code>
+      </div>
+    </section>
+
+    <!-- Interactive Playground: Hands-on experimentation with different copy types -->
+    <section id="interactive" class="section">
+      <h2>Interactive Playground</h2>
+      <p class="section-desc">Interact with the state below and watch the magic happen.</p>
+      
+      <div class="glass playground-app">
+        <!-- Controls: Copying and Reset actions -->
+        <div class="toolbar flex-wrap">
+          <button class="btn btn-action" id="btn-ref">🔗 `copy = orig`</button>
+          <button class="btn btn-action" id="btn-shallow">🌊 `{...orig}`</button>
+          <button class="btn btn-action" id="btn-deep">🧱 `structuredClone`</button>
+          <button class="btn btn-danger" id="btn-reset">↺ Reset State</button>
+        </div>
+
+        <!-- Split View Code: Side-by-side comparison of original and copy -->
+        <div class="split-view">
+          
+          <!-- Original Object Panel -->
+          <div class="code-panel">
+            <div class="panel-header">
+              <h3>Original</h3>
+              <div class="action-row">
+                <button class="btn-sm mut-btn" id="mut-orig-name">Modify Name</button>
+                <button class="btn-sm mut-btn" id="mut-orig-level">Up Level</button>
+              </div>
+            </div>
+            <pre><code><span class="keyword">const</span> <span class="var-name">original</span> = {
+  <span class="key">name</span>: <span class="string">"</span><span id="orig-name" class="val-node string">Hero</span><span class="string">"</span>,
+  <span class="key">stats</span>: {
+    <span class="key">level</span>: <span id="orig-level" class="val-node number">1</span>
+  }
+};</code></pre>
+          </div>
+
+          <!-- Copy Object Panel -->
+          <div class="code-panel" id="copy-panel">
+            <div class="panel-header">
+              <h3>Copy <span id="copy-badge" class="badge">None</span></h3>
+              <div class="action-row">
+                <button class="btn-sm mut-btn" id="mut-copy-name" disabled>Modify Name</button>
+                <button class="btn-sm mut-btn" id="mut-copy-level" disabled>Up Level</button>
+              </div>
+            </div>
+            <!-- Faded placeholder when no copy is active -->
+            <pre id="copy-code-block"><code id="code-copy" class="faded"><span class="comment">// Create a copy above to see code</span>
+let copy = undefined;</code></pre>
+            <!-- Active copy code display -->
+            <pre id="copy-code-active" class="hidden"><code><span class="keyword">let</span> <span class="var-name">copy</span> = {
+  <span class="key">name</span>: <span class="string">"</span><span id="copy-name" class="val-node string"></span><span class="string">"</span>,
+  <span class="key">stats</span>: {
+    <span class="key">level</span>: <span id="copy-level" class="val-node number"></span>
+  }
+};</code></pre>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- Visual Memory Diagram: Animated SVG showing stack and heap pointers -->
+    <section id="diagram" class="section">
+      <h2>Visual Memory Heap</h2>
+      <p class="section-desc">Watch where variables point in the computer's memory.</p>
+      <div class="glass memory-container" id="svg-container"></div>
+    </section>
+
+    <!-- Console Simulation: Typewriter effect demonstrating a common pitfall -->
+    <section id="terminal" class="section">
+      <h2>Console Terminal</h2>
+      <div class="glass terminal-board">
+        <div class="mac-buttons"><span class="red"></span><span class="yellow"></span><span class="green"></span></div>
+        <div id="typewriter" class="terminal-text"></div>
+      </div>
+    </section>
+
+    <!-- Quiz Section: Test understanding of the concepts -->
+    <section id="quiz" class="section">
+      <h2>Test Your Knowledge</h2>
+      <div class="glass quiz-container" id="quiz-root"></div>
+    </section>
+
+  </main>
+  
+  <footer>
+    <p>Built with Vanilla JS</p>
+  </footer>
+
+  <!-- Main Application Logic -->
+  <script src="./script.js"></script>
+</body>
+</html>
